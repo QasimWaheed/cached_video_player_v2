@@ -1,0 +1,43 @@
+name: cached_video_player
+description: A new flutter plugin that is virtually a clone of official video_player plugin except that it supports caching( Android and iOS)
+version: 2.0.4
+publish_to: none
+
+flutter:
+  plugin:
+    platforms:
+      android:
+        package: com.lazyarts.vikram.cached_video_player
+        pluginClass: CachedVideoPlayerPlugin
+      ios:
+        pluginClass: CachedVideoPlayerPlugin
+      web:
+        default_package: video_player_web
+
+dependencies:
+#  meta: ^1.11.0
+  video_player_platform_interface: ^6.2.2
+
+  # The design on https://flutter.dev/go/federated-plugins was to leave
+  # this constraint as "any". We cannot do it right now as it fails pub publish
+  # validation, so we set a ^ constraint. The exact value doesn't matter since
+  # the constraints on the interface pins it.
+  # TODO(amirh): Revisit this (either update this part in the design or the pub tool).
+  # https://github.com/flutter/flutter/issues/46264
+  video_player_web: ^2.3.0
+
+  flutter:
+    sdk: flutter
+  flutter_test:
+    sdk: flutter
+
+dev_dependencies:
+  lints: ^3.0.0
+#  pedantic: ^1.11.1
+  pigeon: ^18.0.0
+  flutter_lints: ^3.0.2
+
+environment:
+  sdk: ">=3.3.1 <4.0.0"
+  flutter: ">=2.10.0"
+
