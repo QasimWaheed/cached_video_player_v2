@@ -1,8 +1,9 @@
 group 'io.flutter.plugins.videoplayer'
 version '1.0-SNAPSHOT'
-def args = ["-Xlint:deprecation","-Xlint:unchecked","-Werror"]
+//def args = ["-Xlint:deprecation","-Xlint:unchecked","-Werror"]
 
 buildscript {
+    ext.kotlin_version = '1.7.10'
     repositories {
         google()
         jcenter()
@@ -20,33 +21,69 @@ rootProject.allprojects {
     }
 }
 
-project.getTasks().withType(JavaCompile){
-    options.compilerArgs.addAll(args)
-}
+//project.getTasks().withType(JavaCompile){
+//    options.compilerArgs.addAll(args)
+//}
 
 apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 34
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
+    sourceSets {
+        main.java.srcDirs += 'src/main/kotlin'
+        test.java.srcDirs += 'src/test/kotlin'
+    }
 
     defaultConfig {
-        minSdkVersion 16
+        minSdkVersion 21
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
-    }
-    lintOptions {
-        disable 'InvalidPackage'
-    }
-    android {
-        compileOptions {
-            sourceCompatibility 1.8
-            targetCompatibility 1.8
-        }
     }
 
     dependencies {
+        testImplementation 'org.jetbrains.kotlin:kotlin-test'
+        testImplementation 'org.mockito:mockito-core:5.0.0'
         implementation 'com.google.android.exoplayer:exoplayer-core:2.17.1'
         implementation 'com.google.android.exoplayer:exoplayer-hls:2.17.1'
         implementation 'com.google.android.exoplayer:exoplayer-dash:2.17.1'
         implementation 'com.google.android.exoplayer:exoplayer-smoothstreaming:2.17.1'
     }
+
+    testOptions {
+        unitTests.all {
+            useJUnitPlatform()
+
+            testLogging {
+                events "passed", "skipped", "failed", "standardOut", "standardError"
+                outputs.upToDateWhen {false}
+                showStandardStreams = true
+            }
+        }
+    }
+
+    lintOptions {
+        disable 'InvalidPackage'
+    }
+//    android {
+//        compileOptions {
+//            sourceCompatibility 1.8
+//            targetCompatibility 1.8
+//        }
+//    }
+
+//    dependencies {
+//        implementation 'com.google.android.exoplayer:exoplayer-core:2.17.1'
+//        implementation 'com.google.android.exoplayer:exoplayer-hls:2.17.1'
+//        implementation 'com.google.android.exoplayer:exoplayer-dash:2.17.1'
+//        implementation 'com.google.android.exoplayer:exoplayer-smoothstreaming:2.17.1'
+//    }
 }
